@@ -1,0 +1,49 @@
+<div id="news-item-full" class="news-box" style="margin-bottom: 12px;">
+
+	<div class="news-header full">
+
+		<a class="news-link" href="go/shop/buy/<?php echo $citem->item->id; ?>"><b><?php echo $citem->item->title; ?></b></a>
+
+		<div style="float: right; display: inline-block; padding-right: 6px;" <?if (!$citem->item->infinite) echo "class=\"stt\" title=\"Конец подписки {$citem->valid_until}\""?>>
+
+			<?php echo ( $citem->date ) ?>
+
+		</div>
+
+	</div>
+
+	<div class="block-line-news"></div>
+
+	<div class="news-text">
+		Ключ: <?php echo $citem->key ?>
+	</div>
+	<div class="news-footer"><? if($citem->canceled != 1):?><? if($citem->updated != null) {?>Последнее обновление <?php echo $citem->updated; ?>
+		<span class="divider">|</span> <a href="go/shop/take_order/<?php echo $citem->id ?>"><i class="glyphicon glyphicon-download"></i> Скачать</a>
+		<span class="divider">|</span> <? } ?><a href="go/shop/cart/?upgrade=<?php echo $citem->id ?>"><i class="glyphicon glyphicon-refresh"></i> Обновить</a><? if($citem->updated == null and $citem->canceled != 2):?>
+		<span class="divider">|</span> <a href="go/shop/cart/?cancel=<?php echo $citem->id ?>"><i class="glyphicon glyphicon-remove"></i> Отменить заказ</a><?endif?>
+		<span class="divider">|</span> <a href="go/shop/cart/?renew=<?php echo $citem->id ?>"><i class="fa fa-arrow-right"></i> Продлить</a><?else:?>Отменено<?endif?>
+		<div style="float: right; display: inline-block;"><a target="_blank" class="news-link-f" href="http://<?php echo TextBase::HTMLDestruct($citem->project)?>"><?php echo TextBase::HTMLDestruct($citem->project)?></a> <i class="fa fa-globe"></i> <a data-toggle="modal" class="stt" data-target="#modal_update_domain_<?php echo $citem->id?>" title="Сменить домен"><i class="fa fa-exchange"></i></a></div>
+	</div>
+
+</div>
+
+<div class="modal fade" id="modal_update_domain_<?php echo $citem->id?>" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">Смена домена</h4>
+			</div>
+			<div class="modal-body" align="center">
+				<form action="go/shop/cart" method="POST" class="form-horizontal" enctype="multipart/form-data">
+					<input type="hidden" name="change_domain" value="<?php echo $citem->id?>">
+					<input type="text" name="new_domain" class="form-control spp" style="margin-top: 5px" title="Новый домен" data-trigger="focus" data-content="Новый домен, на который хотите поставить ShopEX. Если хотите поставить на поддомен, то указывайте его полностью. Не нужно добавлять http(s):// и сшеш в конце." data-placement="bottom" placeholder="Новый домен">
+					<input class="btn btn-primary btn-block" style="margin-top: 5px" type="submit" value="Изменить" />
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Закрыть</button>
+			</div>
+		</div>
+	</div>
+</div>

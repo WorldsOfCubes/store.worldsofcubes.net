@@ -1,0 +1,28 @@
+<div class="comment-container" style="border: 1px dashed #e5e5e5;">
+	<div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
+
+		<img class="img-polaroid" src="skin.php?mini=<?php echo $temp_ticket['author']; ?>" width="64" height="64" alt="Пользователь <?php echo $temp_ticket[$bd_users['login']]; ?>"/>
+
+	</div>
+
+	<div class="comment-self" >
+		<div style="float: right">#<?=$temp_ticket['id']?></div>
+		<div class="comment-info"><?=$before?> <b><a href="go/user/profile/<?php echo $temp_ticket[$bd_users['login']]; ?>" class="player-name"><?php echo $temp_ticket[$bd_users['login']]; ?></a></b>:</div>
+
+		<div class="comment-text"><?php echo $temp_ticket['message']; ?></div>
+
+		<div class="comment-addition">
+			&nbsp;<?php echo $temp_ticket['time']; ?>
+			<form method="post">
+				<input type="hidden" name="id" value="<?=$temp_ticket['id']?>">
+				<?if($temp_ticket['type'] < 2):?>
+				| Отметить:&nbsp;
+				<?if($temp_ticket['type'] < 1):?><input type="submit" class="btn btn-link" name="viewed_ticket" value="просмотренным">&nbsp;<?endif?>
+				<input type="submit" class="btn btn-link" name="compete_ticket" value="закрытым"> <?endif?> |&nbsp;
+				<input type="submit" class="btn btn-link" name="delete_ticket" value="Удалить"> |
+			</form>
+		</div>
+
+	</div>
+
+</div>

@@ -1,0 +1,97 @@
+AddDefaultCharset UTF-8
+DefaultLanguage ru-RU
+
+ErrorDocument 403 /go/403
+ErrorDocument 404 /go/404
+
+Options -Indexes
+
+php_flag register_globals off
+php_flag magic_quotes_gpc off
+
+<Files *.md>
+Deny from all
+</Files>
+<Files log.txt>
+Deny from all
+</Files>
+<Files .git/>
+Deny from all
+</Files>
+
+<IfModule mod_rewrite.c>
+
+    SetEnv HTTP_MOD_REWRITE On
+
+RewriteEngine on
+
+RewriteCond %{HTTP_HOST} ^store\.worldsofcubes\.ru$ [NC]
+RewriteRule ^(.*)$ https://store.worldsofcubes.net/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^store\.worldofcubes\.ru$ [NC]
+RewriteRule ^(.*)$ https://store.worldsofcubes.net/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^store\.worldsofcubes\.ru$ [NC]
+RewriteRule ^(.*)$ https://store.worldsofcubes.net/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^store\.wocubes\.net$ [NC]
+RewriteRule ^(.*)$ https://store.worldsofcubes.net/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^store\.wocubes\.ru$ [NC]
+RewriteRule ^(.*)$ https://store.worldsofcubes.net/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^store\.unicubes\.ru$ [NC]
+RewriteRule ^(.*)$ https://store.worldsofcubes.net/$1 [R=301,L]
+
+RewriteRule ^news/([^/]+)/?$ index.php?id=$1 [L,NE]
+RewriteRule ^category/([^/]+)/?$ index.php?cid=$1 [L,NE]
+RewriteRule ^list/([^/]+)/?$ index.php?l=$1 [L,NE]
+RewriteRule ^control/([^/]+)/?$ index.php?mode=control&do=$1 [L,NE]
+
+RewriteRule ^go/([^/]+)/?$ index.php?mode=$1 [L,NE]
+RewriteRule ^go/options/([\w]+)/?$ index.php?mode=options&result=$1 [L]
+
+RewriteRule ^go/tickets/([0-9]+)/?$ index.php?mode=tickets&action=list&page=$1 [L,NE]
+RewriteRule ^go/tickets/([^/]+)/?$ index.php?mode=tickets&action=$1 [L,NE]
+RewriteRule ^go/tickets/admin/([^/]+)/?$ index.php?mode=tickets&action=admin&user=$1 [L,NE]
+
+RewriteRule ^go/shop/([^/]+)/?$ index.php?mode=shop&do=$1 [L,NE,QSA]
+RewriteRule ^go/shop/buy/([^/]+)/?$ index.php?mode=shop&do=buy&id=$1 [L,NE]
+RewriteRule ^go/shop/key_adm/([^/]+)/?$ index.php?mode=shop&do=key_adm&p=$1 [L,NE]
+RewriteRule ^go/shop/server_edit/([^/]+)/?$ index.php?mode=shop&do=server_edit&id=$1 [L,NE]
+RewriteRule ^go/shop/item_edit/([^/]+)/?$ index.php?mode=shop&do=item_edit&id=$1 [L,NE]
+RewriteRule ^go/shop/take_order/([0-9]+)/?$ index.php?mode=shop&do=take_order&id=$1 [L,NE]
+RewriteRule ^go/shop/([^/]+)/([0-9]+)/?$ index.php?mode=shop&do=$1&p=$2 [L,NE]
+RewriteRule ^go/shop/([^/]+)/([^/]+)/?$ index.php?mode=shop&do=$1&cat=$2 [L,NE]
+RewriteRule ^go/shop/([^/]+)/([^/]+)/([0-9]+)/?$ index.php?mode=shop&do=$1&cat=$2&p=$3 [L,NE]
+
+RewriteRule ^go/banlist/([^/]+)/?$ index.php?mode=banlist&page=$1 [L,NE]
+
+RewriteRule ^go/user/([^/]+)/?$ index.php?mode=user&page=$1 [L,NE]
+RewriteRule ^go/user/profile/([^/]+)/?$ index.php?mode=user&name=$1 [L,NE]
+
+RewriteRule ^go/users/([^/]+)/?$ index.php?mode=user&do=$1 [L,NE]
+RewriteRule ^go/users/profile/([^/]+)/?$ index.php?mode=user&do=full&name=$1 [L,NE]
+
+RewriteRule ^go/pm/([^/]+)/?$ index.php?mode=pm&do=$1 [L,NE]
+RewriteRule ^go/pm/inbox/([^/]+)/?$ index.php?mode=pm&do=inbox&page=$1 [L,NE]
+RewriteRule ^go/pm/outbox/([^/]+)/?$ index.php?mode=pm&do=outbox&page=$1 [L,NE]
+RewriteRule ^go/pm/write/([^/]+)/?$ index.php?mode=pm&do=write&name=$1 [L,NE]
+RewriteRule ^go/pm/delete/([^/]+)/?$ index.php?mode=pm&do=delete&id=$1 [L,NE]
+RewriteRule ^go/pm/view/([^/]+)/?$ index.php?mode=pm&do=view&id=$1 [L,NE]
+
+RewriteRule ^go/forum/([^/]+)/?$ index.php?mode=forum&id=$1 [L,NE]
+RewriteRule ^go/forum/mainadd/([^/]+)/?$ index.php?mode=forum&do=mainadd&id=$1 [L,NE]
+RewriteRule ^go/forum/view/([^/]+)/([^/]+)/?$ index.php?mode=forum&do=viewforum&id=$1&page=$2 [L,NE]
+RewriteRule ^go/forum/add/([^/]+)/?$ index.php?mode=forum&do=add&id=$1 [L,NE]
+RewriteRule ^go/forum/view/topic/([^/]+)/([^/]+)/?$ index.php?mode=forum&do=viewtopic&id=$1&page=$2 [L,NE]
+RewriteRule ^go/forum/edit/([^/]+)/?$ index.php?mode=forum&do=edit&id=$1 [L,NE]
+
+RewriteRule ^get/([^/]+)/?$ action.php?method=download&file=$1 [L,NE]
+
+RewriteRule  ^authenticate$ MineCraft/auth16x.php [L]
+RewriteRule  ^invalidate$ MineCraft/invalidate16x.php [L]
+RewriteRule  ^refresh$ MineCraft/refresh16x.php [L]
+RewriteRule  ^joinserver.jsp MineCraft/joinserver.php [L,NE]
+RewriteRule  ^checkserver.jsp MineCraft/checkserver.php [L,NE]
+
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?mode=404&route=%{REQUEST_URI}
+
+</IfModule>

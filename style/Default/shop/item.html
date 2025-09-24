@@ -1,0 +1,30 @@
+<div class="col-md-<?=$how?>">
+	<div class="panel panel-default" style="border-radius: 0px;margin-top:10px;<?if(!$item['published']) echo 'color: #A94442; background-color: #F2DEDE; border-color: #EBCCD1';elseif($item['new']) echo 'color: #31708F; background-color: #D9EDF7; border-color: #BCE8F1';?>';">
+		<div class="panel-heading">
+			<h3 class="panel-title"><?=$item['title']?></h3>
+		</div>
+		<div class="panel-body">
+			<div style="text-align: center;">
+				<a href="go/shop/buy/<?=$item['id']?>">
+					<img height="128" width="128" src="<?=$item['pic']?>" style="max-width: 100%" />
+				</a>
+				<p><?=($item['price']!=0)?((($item['discount'] == 0)?$item['price']:"<s>{$item['price']}</s> <b style=\"color:red\">" . (float) ($item['price'] - $item['discount']) .  "</b>") . $donate['currency_donate']):'Бесплатно'?></p>
+				<div class="btn-group" style="margin-top: 5px" align="left">
+					<a href="go/shop/buy/<?=$item['id']?>" class="btn btn-default">
+						<i class="glyphicon glyphicon-shopping-cart"></i>
+					</a>
+
+					<?if($user and $user->lvl()>=15):?>
+						<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="go/shop/item_edit/<?=$item['id']?>"><i class="glyphicon glyphicon-pencil"></i> Редактиовать</a></li>
+							<li><a href="go/shop/<?=$server->url?>/?delitem=<?=$item['id']?>"><i class="glyphicon glyphicon-remove"></i> Удалить</a></li>
+						</ul>
+					<?endif?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

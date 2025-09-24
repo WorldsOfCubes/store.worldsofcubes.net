@@ -1,0 +1,19 @@
+<div class="comment-container" style="border: 1px dashed #e5e5e5;">
+	<div class="comment-avatar" style="vertical-align: top; display: inline-block; position: relative;">
+
+		<img class="img-polaroid" src="skin.php?mini=<?php echo $temp_ticket['author']; ?>" width="64" height="64" alt="Пользователь <?php echo $temp_ticket[$bd_users['login']]; ?>"/>
+
+	</div>
+
+	<div class="comment-self" >
+		<div style="float: right">#<?=$temp_ticket['id']?></div>
+
+		<div class="comment-info"><?=$before?> <b><a href="go/user/profile/<?php echo $temp_ticket[$bd_users['login']]; ?>" class="player-name"><?php echo $temp_ticket[$bd_users['login']]; ?></a></b>:</div>
+
+		<div class="comment-text"><?php echo $temp_ticket['message']; ?></div>
+
+		<div class="comment-addition">&nbsp;<?php echo $temp_ticket['time']; ?></div>
+
+	</div>
+
+</div>

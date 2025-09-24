@@ -1,0 +1,38 @@
+<div class="form-block">
+	<div class="block-header"><?=$what?> товар</div>
+
+	<div class="block-line"></div>
+
+	<form method="post" class="form-horizontal">
+
+		<p><input type="text" name="title" class="form-control spp" title="Название товара" data-trigger="focus" data-content="Отображается на странице со списком товаров" data-placement="bottom" placeholder="Название" value="<?=$title?>">
+		<p><textarea type="text" name="description" class="form-control spp" title="Описание товара" data-trigger="focus" data-content="Базовое описание товара. Отображается на странице покупки.Можно использовать BB-коды. Строки переносятся автоматически." data-placement="bottom" placeholder="Краткое описание"><?=$description?></textarea>
+		<p><input type="text" name="down_url" class="form-control spp" title="url скачивания/репозитория" data-trigger="focus" data-content="url, по которому будет скачиваться Ваш модуль. Для приватных репозиториев должен быть указан именно SSH URL, для публичных - URL может быть любым. Подробнее о модулях в репозиториях и SSH ключах можете выяснить в тикетах." data-placement="bottom" placeholder="URL репозитория/для скачивания" value="<?=$down_url?>">
+		<p><label class="checkbox">
+				<input type="checkbox" name="git" value="1" <?php echo ($git)?'checked="checked"':'' ?>> Это git-репозиторий <a class="glyphicon glyphicon-info-sign stt" title="Если Вы можете указать просто ссылку на скачивание содержимого репозитория, укажите её, так будет проще!"></a>
+			</label>
+		<?if($user->lvl() >= 15):?>
+		<p><label class="checkbox">
+				<input type="checkbox" name="published" value="1" <?php echo ($published)?'checked="checked"':'' ?>> Опубликовано <a class="glyphicon glyphicon-info-sign stt" title="Если товар рано публиковать для всех, то снимите эту галочку"></a>
+			</label>
+		<?endif?>
+		<p><label class="checkbox">
+				<input type="checkbox" name="infinite" value="1" <?php echo ($infinite)?'checked="checked"':'' ?>> Покупается раз и навсегда <a class="glyphicon glyphicon-info-sign stt" title="Если &quot;галочку&quot; не поставить, то через год пользователям придется продлевать подписку на мод"></a>
+			</label>
+        <p><select name="cid" class="form-control spp" title="Категория" data-trigger="focus" data-content="Выберите категорию товара из созданных нами" data-placement="top">
+            <?=$cats?>
+        </select>
+		<p><select name="server" class="form-control spp" title="Раздел" data-trigger="focus" data-content="Товар может находится в каком-то одном разделе." data-placement="top">
+			<?=$srvs?>
+		</select>
+		<p><input type="text" name="pic" class="form-control spp" title="url картинки" data-trigger="focus" data-content="Укажите url картинки с изображением товара" data-placement="bottom" placeholder="Картинка товара" value="<?=$pic?>">
+		<p><input type="text" name="price" class="form-control spp" title="Цена" data-trigger="focus" data-content="Может быть дробной" data-placement="bottom" placeholder="Цена" value="<?=$price?>">
+		<p><input type="text" name="discount" class="form-control spp" title="Скидка" data-trigger="focus" data-content="Сумма, которая вычитается из стоимости. Как и цена, может быть дробной" data-placement="bottom" placeholder="Скидка" value="<?=$discount?>">
+		<p><input type="text" name="num" class="form-control spp" title="Количество продаж со скидкой" data-trigger="focus" data-content="Количество раз, которое может быть продан товар по скидке." data-placement="bottom" placeholder="Количество продаж со скидкой" value="<?=$num?>">
+
+			<input type="hidden" name="submit" value="1"><div class="pull-right">
+		<input id="message-button" class="btn btn-default" type="submit" value="<?=$what?>" />
+
+	</div>
+	</form>
+</div>

@@ -1,0 +1,195 @@
+<div style="margin-top:10px;"></div>
+<?php echo $message ?>
+<div class="form-block">
+
+	<div class="block-header">Настройки аккаунта</div>
+	<div class="block-line"></div>
+
+	<div class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<div class="navbar-brand"><?php echo $player; ?></div>
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="#tab1" data-toggle="tab">Информация</a></li>
+				<li><a href="#tab2" data-toggle="tab">Настройки</a></li>
+				<li><a href="#tab3" data-toggle="tab">Управление счетами</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="tabbable" style="display: inline-block;">
+		<div class="tab-content">
+
+			<div class="tab-pane active" id="tab1" style="margin-top: 6px;">
+
+				<?php echo $profile_info ?>
+
+			</div>
+
+			<div class="tab-pane" id="tab2">
+
+				<form id="profile-update" autocomplete="off" action="action.php" method="post"
+				      enctype="multipart/form-data" class="form-horizontal" role="form">
+
+					<input type="hidden" name="method" value="profile" />
+
+					<?php echo $profile_inputs ?>
+
+					<div class="form-group">
+						<div class="col-lg-offset-2 col-lg-10">
+							<input id="profile-button" class="btn btn-default" type="submit"
+							       onclick="UpdateProfile(); return false" value="Изменить" />
+						</div>
+					</div>
+
+				</form>
+
+			</div>
+
+			<div class="tab-pane" id="tab3" style="margin-top: 6px;">
+				<div class="row">
+					<div class="col-md-5" style="font-weight: bold">
+						Основной счет:
+					</div>
+					<div class="col-md-7">
+						<?=$user->getMoney() . $donate['currency_donate']?>
+					</div>
+				</div>
+				<?if($user->getEcon()):?><div class="row">
+					<div class="col-md-5" style="font-weight: bold">
+						Счет с заработанными деньгами:
+					</div>
+					<div class="col-md-7">
+						<?=$user->getEcon() . $donate['currency_ingame']?>
+					</div>
+				</div><?endif?>
+				<center>
+					<div class="btn-group-vertical" style="margin-top: 5px;">
+						<a href="#donate-ik" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [InterKassa]</a>
+						<a href="#donate-ya" role="button" class="btn btn-default" data-toggle="modal">Пополнить счет [Яндекс.Деньги, Банковская карта]</a>
+						<?if($user->getEcon()):?><a href="#exchange" role="button" class="btn btn-default" data-toggle="modal">Обмен денег</a><?endif?>
+					</div>
+				</center>
+				<div class="modal fade" id="donate-ik" tabindex="-1" role="dialog" aria-labelledby="donateikLabel"
+				     aria-hidden="true" style="display:none">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="donateikLabel">Укажите сумму</h3>
+							</div>
+							<form name="payment" method="post" action="https://sci.interkassa.com/"
+							      enctype="utf-8">
+								<div class="modal-body">
+									<input type="hidden" name="ik_co_id" value="<?php echo ($donate['ik_shop_id']); ?>">
+									<div class="input-group">
+										<input class="input-medium form-control" size="16"
+										       type="number" name="ik_am"><span class="input-group-addon">р.</span>
+									</div>
+									<input type="hidden" name="ik_pm_no" value="<?php echo ($user->name()); ?>">
+									<input type="hidden" name="ik_desc" value="Пополнение счета"><br>
+									Внимание! Вы сейчас будете перенаправлены на сайт платежной системы Interkassa. Если
+									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-default" type="button" data-dismiss="modal">Отмена</button>
+									<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<script language="JavaScript">
+					function SetYaSum() {
+						amount_due = GetById('ya_sum_to_get')
+						sum = GetById('ya_sum')
+						sum_txt = GetById('ya_sum_txt')
+						switch (GetById('ya_type').value) {
+							case 'PC':
+								sum_txt.innerHTML = (sum.value = ((amount_due.value / 0.995) + 0.01).toFixed(2))
+								break
+							case 'AC':
+								sum_txt.innerHTML = (sum.value = ((amount_due.value / 0.98) + 0.01).toFixed(2))
+								break
+							default:
+								return false
+								break
+						}
+						return true
+					}
+				</script>
+				<div class="modal fade" id="donate-ya" tabindex="-1" role="dialog" aria-labelledby="donateyaLabel"
+				     aria-hidden="true" style="display:none">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="donateyaLabel">Укажите сумму</h3>
+							</div>
+							<form name="payment" method="POST" action="https://money.yandex.ru/quickpay/confirm.xml"
+							      enctype="utf-8" onsubmit="SetYaSum()" target="_blank">
+								<div class="modal-body">
+									<div class="input-group">
+										<input class="input-medium form-control" size="16" type="number" id="ya_sum_to_get" onchange="SetYaSum()" onkeypress="SetYaSum()" onkeyup="SetYaSum()"><span class="input-group-addon">р.</span>
+										<select name="paymentType" class="form-control" id="ya_type" onchange="SetYaSum()" onkeypress="SetYaSum()" onkeyup="SetYaSum()">
+											<option value="PC">Кошелек Яндекс.Денег (коммиссия 0,5%)</option>
+											<option value="AC">Visa/MasterCard (коммиссия 2%)</option>
+										</select>
+									</div>
+									<input type="hidden" name="receiver" value="<?php echo ($donate['up_shop_id']); ?>">
+									<input type="hidden" name="label" value="<?php echo ($user->name()); ?>">
+									<input type="hidden" name="formcomment" value="WorldsOfCubes Store"><br>
+									<input type="hidden" name="short-dest" value="Пополнение счета"><br>
+									<input type="hidden" name="targets" value="Оплата автору за труд"><br>
+									<input type="hidden" name="sum" value="0" id="ya_sum"><br>
+									<input type="hidden" name="quickpay-form" value="shop"><br>
+									Вы должны будуте заплатить <b id="ya_sum_txt">0</b> рублей.<br/>
+									Внимание! Вы сейчас будете перенаправлены на сайт платежной системы Яндекс.Деньги. Если
+									деньги не пришли, обратитесь к онлайн-консультанту этой системы.
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-default" type="button" data-dismiss="modal">Отмена</button>
+									<button class="btn btn-default btn-primary" value="Пополнить">Пополнить</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<?if($user->getEcon()):?>
+				<div class="modal fade" id="exchange" tabindex="-1" role="dialog" aria-labelledby="exchangeLabel"
+				     aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+								<h3 id="exchangeLabel">Обмен между счетами</h3>
+							</div>
+							<form method="post">
+								<div class="modal-body">
+									Перевод заработанных денег в деньги, доступные для покупки в пропорции 1:1<br>
+
+									<div class="input-group">
+										<input class="input-medium form-control" id="appendedPrependedInput" size="16"
+										       type="number" name="wantby" placeholder="Сумма"><span
+											class="input-group-addon">р.</span>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button class="btn btn-default" type="button" data-dismiss="modal" aria-hidden="true">Отмена
+									</button>
+									<input TYPE="submit" class="btn btn-primary" name="buym" value="Обмен">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<?endif?>
+				<br>
+
+				<p style="color:red"><b>Внимание!</b> В случае атак или иных форс-мажоров администрация за утерянные деньги
+				                                ответственности не несет и восстанавливает их исходя исключительно из бэкапов и логов!
+			</div>
+
+		</div>
+	</div>
+
+</div>

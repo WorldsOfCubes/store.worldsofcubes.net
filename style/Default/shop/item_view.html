@@ -1,0 +1,64 @@
+<ol class="breadcrumb">
+	<li><a href="go/shop">Все товары</a></li>
+	<li><a href="go/shop/<?= $server->url ?>"><?= $server->name ?></a></li>
+	<li><a href="go/shop/<?= $server->url ?>/<?= $cat->url ?>"><?= $cat->name ?></a></li>
+	<li class="active"><?= $item->title ?></li>
+</ol>
+<div class="form-block">
+	<div class="block-header">
+		<div class="row">
+			<div class="col-md-3">
+				<?= $item->title ?>
+			</div>
+			<div class="col-md-9">
+				<div class="pull-right"><?= ($item->price != 0) ? ((($item->discount == 0) ? $item->price : "<s>{$item->price}</s> <b style=\"color:red\">" . (float)($item->price - $item->discount) . "</b>") . $donate['currency_donate']) : "Бесплатно" ?></div>
+				Автор: <a href="//worldsofcubes.net/go/user/profile/<?= $item->author_name ?>"><?= $item->author_name ?> <?php if($item->author_verified): ?>&nbsp;<div class="label label-success stt" data-toggle="tooltip" data-placement="top" title="Подтвержденный ник"><i class="glyphicon glyphicon-ok"></i></div><? endif; ?></a>
+			</div>
+		</div>
+	</div>
+	<div class="block-line"></div>
+	<div class="tab-pane" id="launcher">
+		<div class="row">
+			<div class="col-md-3" align="center">
+				<img src="<?= $item->pic ?>" width="80%" alt="<?= $item->title ?>"></a>
+				<p><?= ($item->price != 0) ? ((($item->discount == 0) ? $item->price : "<s>{$item->price}</s> <b style=\"color:red\">" . (float)($item->price - $item->discount) . "</b>") . $donate['currency_donate']) : "Бесплатно" ?></p>
+				<? if ($item->discount and $item->num): ?><p>Осталось по акции: <?= $item->num ?></p><? endif ?>
+			</div>
+			<div class="col-md-9">
+				<?= Message::BBDecode(nl2br(TextBase::HTMLDestruct($item->description))) ?>
+				<? if ($item->price == 0): ?>
+				<p>
+					<a class="btn btn-success btn-lg" href="<?= $down_url ?>"><i class="fa fa-download"></i> Скачать</a>
+				</p>
+				<? elseif ($user and $user->lvl() > 1 and $item->price - $item->discount > 0): ?>
+					<p><button class="btn btn-warning" data-toggle="modal" data-target="#modal_order_confirm"><i class="glyphicon glyphicon-shopping-cart"></i> Купить (<?= $item->price - $item->discount . $donate['currency_donate'] ?>)</button></p>
+					<div class="modal fade" id="modal_order_confirm" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close"><spanaria-hidden="true">&times;</span></button>
+									<h4 class="modal-title" id="myModalLabel">Подтверждение заказа</h4>
+								</div>
+								<form name="its" method="post" class="form-inline">
+									<div class="modal-body">
+										<b>Продукт:</b> <?=$item->title?><br />
+										<b>Цена:</b> <?=$item->price . $donate['currency_donate']?><br />
+										<b>Скидка:</b> <?=$item->discount . $donate['currency_donate']?><br />
+										<b>Тип покупки:</b> <?=($item->infinite)?"Вечная лицензия":"Годовая подписка"?><br />
+										<b>Итого:</b> <?= $item->price - $item->discount . $donate['currency_donate'] ?><br />
+										<b>Домен проекта:</b>
+										<input type="text" class="form-control" name="domain" placeholder="Введите домен проекта">
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Закрыть </button>
+										<button type="submit" class="btn btn-primary pull-left" name="submit" value="1"><i class="glyphicon glyphicon-shopping-cart"></i> Купить</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				<? endif ?>
+			</div>
+		</div>
+	</div>
+</div>

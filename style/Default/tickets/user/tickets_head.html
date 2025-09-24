@@ -1,0 +1,74 @@
+<script language="JavaScript" type="text/javascript">
+	function CheckLen() {
+
+		var s = GetById('new_ticket').value
+		s = s.replace(/\r\n/g, "22222")
+		s = s.replace(/\n/g, "22222")
+		s = s.replace(/\'/g, "222222")
+		s = s.replace(/\"/g, "222222")
+
+		return 512-s.length
+	}
+
+	function DrawLenInfo(e) {
+
+		var code = -1
+
+		if (e) {
+
+			e = e || window.event
+			code   = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode)
+		}
+
+		var used = CheckLen()
+
+		if ( used <= 0 ) GetById('ticket-len').style.color = '#aa2f17'
+		else             GetById('ticket-len').style.color = '#17aa4e'
+
+		GetById('ticket-len').innerHTML = used
+
+		switch (code){
+			/*case 13:*/
+			case 8:
+			case 9:
+			case 46:
+			case 37:
+			case 38:
+			case 116:
+			case 40:
+				return true;
+		}
+		if ( used <= 0 ) return false
+		else             return true
+
+	}
+</script>
+
+<div class="form-block" style="margin-bottom: 10px;">
+
+	<div class="block-header">{WRITE_TICKET}</div>
+
+	<div class="block-line"></div>
+	{WRITE_TICKET_DESC}
+	<form method="post">
+		<div class="block-line"></div>
+
+		<div style="text-align: center;">
+
+			<textarea id="ticket" maxlength="512" class="form-control" style="height:100px" name="ticket" onclick="return DrawLenInfo(event)" onchange="return DrawLenInfo(event)" onkeyup="return DrawLenInfo(event)" onkeypress="return DrawLenInfo(event)" ></textarea>
+
+		</div>
+
+		<div class="block-line"></div>
+
+		<div style="float: left; margin-left: 24px;">{RECENT} <div id="ticket-len" style="display: inline-block; color: #17aa4e;">512</div> {SYMBOLS}</div>
+		<div style="float: right;height:24px;margin-bottom:5px">
+			<?if($user->lvl() <= 2):?>
+			<img id="comment-captcha" src="instruments/captcha/captcha.php?refresh=<?php echo rand(1337,31337) ?>" class="img-thumbnail" alt="CAPTCHA" width="70" height="24" style="margin:0px"/>
+			<input id="antibot" type="text" name="antibot" placeholder="" maxlength="4" class="form-control" style="width: 88px;display:inline; margin-bottom: -10px;" />
+			<?endif?>
+			<input id="comment-button" class="btn btn-default" type="submit" value="{SEND}" />
+
+		</div>
+	</form>
+</div>

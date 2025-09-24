@@ -1,0 +1,15 @@
+<ol class="breadcrumb">
+	<li class="active">Все товары</li>
+</ol>
+<div class="form-block">
+
+	<div class="block-header">Выбор типа товара</div>
+
+	<div class="block-line"></div>
+	Есть два типа товаров - товары команды и товары от сторонних разработчиков.
+	<?if($user and $user->lvl()>=15):?>
+		<div class="pull-right">
+			<a href="go/shop/server_add"><i class="glyphicon glyphicon-plus"></i> Добавить тип товаров</a>
+		</div>
+	<?endif?>
+</div>
